@@ -3,7 +3,7 @@
 public class Product
 {
     public int ProductId { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public string? Name { get; set; }
     public string? Description { get; set; }
     public decimal SalePrice { get; set; } //preco de venda ao cliente
     public decimal CostPrice { get; set; } //preco de custo para o deposito, usado para calcular lucro
