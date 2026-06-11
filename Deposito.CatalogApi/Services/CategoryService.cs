@@ -39,7 +39,7 @@ namespace Deposito.CatalogApi.Services
         {
             var category = _mapper.Map<Category>(categoryDto);
             await _categoryRepository.Create(category);
-            //categoryDto.CategoryId = category.CategoryId;
+            categoryDto.CategoryId = category.CategoryId;
             return _mapper.Map<CategoryDTO>(category);
 
         }

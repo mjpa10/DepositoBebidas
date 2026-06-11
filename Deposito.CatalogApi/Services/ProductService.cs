@@ -43,7 +43,7 @@ public class ProductService : IProductService
     {
         var product = _mapper.Map<Product>(productDto);
         await _productRepository.Create(product);
-        //productDto.ProductId = product.ProductId;
+        productDto.ProductId = product.ProductId;
         return _mapper.Map<ProductDTO>(product);
     }
 
