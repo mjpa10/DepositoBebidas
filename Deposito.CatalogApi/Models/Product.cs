@@ -7,8 +7,8 @@ public class Product
     public string? Description { get; set; }
     public decimal SalePrice { get; set; } //preco de venda ao cliente
     public decimal CostPrice { get; set; } //preco de custo para o deposito, usado para calcular lucro
-    public decimal StockQuantity { get; set; } = 0;
-    public decimal MinimumStock { get; set; } = 5;
+    public int StockQuantity { get; set; } = 0;
+    public int MinimumStock { get; set; } = 5;
     public string? ImageUrl { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

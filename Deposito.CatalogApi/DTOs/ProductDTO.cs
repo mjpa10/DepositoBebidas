@@ -24,10 +24,10 @@ public class ProductDTO
     public decimal CostPrice { get; set; }
     [Required(ErrorMessage = "The Stock is Required")]
     [Range(1, 9999)]
-    public decimal StockQuantity { get; set; }
+    public int StockQuantity { get; set; }
     [Required(ErrorMessage = "The Minimum Stock is Required")]
     [Range(1, 9999)]
-    public decimal MinimumStock { get; set; }
+    public int MinimumStock { get; set; }
     [MaxLength(250)]
     [DisplayName("Product Image")]
     public string? ImageUrl { get; set; }
