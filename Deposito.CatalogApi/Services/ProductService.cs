@@ -50,6 +50,10 @@ public class ProductService : IProductService
     }
     public async Task<ProductDTO> AddProduct(ProductDTO productDto)
     {
+        var category = await _categoryRepository.GetById(productDto.CategoryId);
+
+        if (category == null) return null;
+
         var product = _mapper.Map<Product>(productDto);
         await _productRepository.Create(product);
         productDto.ProductId = product.ProductId;

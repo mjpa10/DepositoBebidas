@@ -61,6 +61,8 @@ namespace Deposito.CatalogApi.Controllers
             if (productDto == null) return BadRequest("Dados inválidos.");
 
             var createdProduct = await _productService.AddProduct(productDto);
+            
+            if (createdProduct is null) return BadRequest($"Category com ID {productDto.CategoryId} não encontrada.");
 
             return new CreatedAtRouteResult("GetProduct", new { id = createdProduct.ProductId },
             createdProduct);

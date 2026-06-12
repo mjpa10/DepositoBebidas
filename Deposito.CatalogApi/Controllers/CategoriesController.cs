@@ -55,7 +55,9 @@ namespace Deposito.CatalogApi.Controllers
         {
             if (categoryDto == null) return BadRequest("Dados inválidos.");
 
-            await _categoryService.AddCategory(categoryDto);
+            var newCategory = await _categoryService.AddCategory(categoryDto);
+
+            if (newCategory is null) return BadRequest($"Category com nome {categoryDto.Name} já existe.");
 
             // Retorna o status 201 Created e preenche o Header Location com a URL do GetById
             return new CreatedAtRouteResult("GetCategory", new { id = categoryDto.CategoryId },
