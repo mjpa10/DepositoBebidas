@@ -45,7 +45,7 @@ namespace Deposito.CatalogApi.Controllers
             var categoryWithProducts = await _categoryService.GetCategoryProducts(id);
             if (categoryWithProducts == null)
             {
-                return NotFound(new { message = $"Categoria com ID {id} não encontrada." });
+                return NotFound($"Category com ID {id} não encontrada.");
             }
             return Ok(categoryWithProducts);
         }
@@ -70,6 +70,11 @@ namespace Deposito.CatalogApi.Controllers
 
             if (categoryDto == null)
                 return BadRequest("Dados inválidos.");
+
+            var category = await _categoryService.GetCategoryById(id);
+
+            if (category is null)
+                return NotFound($"Category com id {id} não encontrada.");
 
             await _categoryService.UpdateCategory(categoryDto);
             return Ok(categoryDto);

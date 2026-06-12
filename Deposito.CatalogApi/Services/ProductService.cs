@@ -8,12 +8,14 @@ namespace Deposito.CatalogApi.Services;
 public class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductRepository productRepository, IMapper mapper)
+    public ProductService(IProductRepository productRepository, IMapper mapper, ICategoryRepository categoryRepository)
     {
         _productRepository = productRepository;
         _mapper = mapper;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<IEnumerable<ProductDTO>> GetProducts()
@@ -22,9 +24,15 @@ public class ProductService : IProductService
         return _mapper.Map<IEnumerable<ProductDTO>>(products);
     }
 
-    public async Task<IEnumerable<ProductDTO>> GetProductsByCategory(int id)
+    public async Task<IEnumerable<ProductDTO?>> GetProductsByCategory(int categoryId)
     {
-        var products = await _productRepository.GetByCategory(id);
+        var category = await _categoryRepository.GetById(categoryId);
+
+        if (category == null)
+            return null;
+
+        var products = await _productRepository.GetByCategory(categoryId);
+
         return _mapper.Map<IEnumerable<ProductDTO>>(products);
     }
 
@@ -34,10 +42,11 @@ public class ProductService : IProductService
         return _mapper.Map<ProductDTO>(product);
     }
 
-    public async Task<ProductDTO> GetProductByName(string name)
+    public async Task<IEnumerable<ProductDTO>> GetProductByName(string name)
     {
-        var product = await _productRepository.GetByName(name);
-        return _mapper.Map<ProductDTO>(product);
+        var products = await _productRepository.GetByName(name);
+
+        return _mapper.Map<IEnumerable<ProductDTO>>(products);
     }
     public async Task<ProductDTO> AddProduct(ProductDTO productDto)
     {

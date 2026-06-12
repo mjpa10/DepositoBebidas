@@ -29,9 +29,9 @@ public class ProductRepository : IProductRepository
         return await _context.Products.AsNoTracking().Include(c => c.Category).FirstOrDefaultAsync(p => p.ProductId == id);
     }
 
-    public async Task<Product> GetByName(string name)
+    public async Task<IEnumerable<Product>> GetByName(string name)
     {
-        return await _context.Products.AsNoTracking().Include(c => c.Category).FirstOrDefaultAsync(p => p.Name == name);
+        return await _context.Products.AsNoTracking().Where(c => c.Name.Contains(name)).ToListAsync();
     }
 
     public async Task<Product> Create(Product product)

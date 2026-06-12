@@ -1,5 +1,4 @@
-﻿using Deposito.CatalogApi.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Deposito.CatalogApi.DTOs;
 

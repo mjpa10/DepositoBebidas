@@ -1,4 +1,5 @@
 ﻿using Deposito.CatalogApi.DTOs;
+using Deposito.CatalogApi.Models;
 using Deposito.CatalogApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace Deposito.CatalogApi.Controllers
             var product = await _productService.GetProductById(id);
             if (product == null)
             {
-                return NotFound(new { message = $"Produto com ID {id} não encontrado." });
+                return NotFound($"Produto com ID {id} não encontrado.");
             }
             return Ok(product);
         }
@@ -38,6 +39,8 @@ namespace Deposito.CatalogApi.Controllers
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetByCategory(int id)
         {
             var products = await _productService.GetProductsByCategory(id);
+            if (products == null) return NotFound($"Nenhum produto encontrado para a categoria com ID {id}.");
+
             return Ok(products);
         }
 
@@ -81,10 +84,10 @@ namespace Deposito.CatalogApi.Controllers
         {
             var product = await _productService.GetProductById(id);
             if (product == null)
-                return NotFound(new { message = $"Produto com ID {id} não encontrado." });
+                return NotFound($"Produto com ID {id} não encontrado.");
 
             await _productService.RemoveProduct(id);
-            return NoContent(); // HTTP 204
+            return NoContent();
         }
 
     }
