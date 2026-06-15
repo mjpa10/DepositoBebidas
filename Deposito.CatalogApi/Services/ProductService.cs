@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Deposito.CatalogApi.DTOs;
 using Deposito.CatalogApi.Models;
+using Deposito.CatalogApi.Pagination;
 using Deposito.CatalogApi.Repositories;
 
 namespace Deposito.CatalogApi.Services;
@@ -45,6 +46,12 @@ public class ProductService : IProductService
     public async Task<IEnumerable<ProductDTO>> GetProductByName(string name)
     {
         var products = await _productRepository.GetByName(name);
+
+        return _mapper.Map<IEnumerable<ProductDTO>>(products);
+    }
+    public async Task<IEnumerable<ProductDTO>> GetProducts(ProductsParameters productsParams)
+    {
+        var products = await _productRepository.GetProducts(productsParams);
 
         return _mapper.Map<IEnumerable<ProductDTO>>(products);
     }

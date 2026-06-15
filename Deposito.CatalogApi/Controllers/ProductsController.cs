@@ -1,5 +1,6 @@
 ﻿using Deposito.CatalogApi.DTOs;
 using Deposito.CatalogApi.Models;
+using Deposito.CatalogApi.Pagination;
 using Deposito.CatalogApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,15 +45,22 @@ namespace Deposito.CatalogApi.Controllers
             return Ok(products);
         }
 
-        [HttpGet("search")]
-        public async Task<ActionResult<ProductDTO>> GetByName([FromQuery] string name)
+        //[HttpGet("search")]
+        //public async Task<ActionResult<ProductDTO>> GetByName([FromQuery] string name)
+        //{
+        //    var product = await _productService.GetProductByName(name);
+        //    if (product == null)
+        //    {
+        //        return NotFound(new { message = $"Produto com o nome '{name}' não encontrado." });
+        //    }
+        //    return Ok(product);
+        //}
+
+        [HttpGet("pagination")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts([FromQuery] ProductsParameters productsParams)
         {
-            var product = await _productService.GetProductByName(name);
-            if (product == null)
-            {
-                return NotFound(new { message = $"Produto com o nome '{name}' não encontrado." });
-            }
-            return Ok(product);
+            var products = await _productService.GetProducts(productsParams);
+            return Ok(products);
         }
 
         [HttpPost]

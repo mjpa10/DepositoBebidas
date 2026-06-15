@@ -1,5 +1,6 @@
 ﻿using Deposito.CatalogApi.Context;
 using Deposito.CatalogApi.Models;
+using Deposito.CatalogApi.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace Deposito.CatalogApi.Repositories;
@@ -32,6 +33,16 @@ public class ProductRepository : IProductRepository
     public async Task<IEnumerable<Product>> GetByName(string name)
     {
         return await _context.Products.AsNoTracking().Where(c => c.Name.Contains(name)).ToListAsync();
+    }
+    public async Task<IEnumerable<Product>> GetProducts(ProductsParameters productsParams)
+    {
+        return await _context.Products
+       .Include(p => p.Category)
+       .AsNoTracking()
+       .OrderBy(p => p.Name)
+       .Skip((productsParams.PageNumber - 1) * productsParams.PageSize)
+       .Take(productsParams.PageSize)
+       .ToListAsync();
     }
 
     public async Task<Product> Create(Product product)
