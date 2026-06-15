@@ -60,6 +60,17 @@ namespace Deposito.CatalogApi.Controllers
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts([FromQuery] ProductsParameters productsParams)
         {
             var products = await _productService.GetProducts(productsParams);
+
+            var metadata = new
+            {
+                products.TotalCount,
+                products.PageSize,
+                products.CurrentPage,
+                products.TotalPages,
+                products.HasNext,
+                products.HasPrevious
+            };
+            Response.Headers.Add("X-Pagination", System.Text.Json.JsonSerializer.Serialize(metadata));
             return Ok(products);
         }
 

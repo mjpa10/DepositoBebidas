@@ -34,15 +34,15 @@ public class ProductRepository : IProductRepository
     {
         return await _context.Products.AsNoTracking().Where(c => c.Name.Contains(name)).ToListAsync();
     }
-    public async Task<IEnumerable<Product>> GetProducts(ProductsParameters productsParams)
+    public async Task<PagedList<Product>> GetProducts(ProductsParameters productsParams)
     {
-        return await _context.Products
-       .Include(p => p.Category)
-       .AsNoTracking()
-       .OrderBy(p => p.Name)
-       .Skip((productsParams.PageNumber - 1) * productsParams.PageSize)
-       .Take(productsParams.PageSize)
-       .ToListAsync();
+        var products = _context.Products
+            .AsNoTracking()
+            .Include(c => c.Category)
+            .OrderBy(p => p.ProductId)
+            .AsQueryable();
+
+        return await PagedList<Product>.ToPagedList(products, productsParams.PageNumber, productsParams.PageSize);
     }
 
     public async Task<Product> Create(Product product)

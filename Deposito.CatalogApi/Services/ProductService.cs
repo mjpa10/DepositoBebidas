@@ -49,11 +49,13 @@ public class ProductService : IProductService
 
         return _mapper.Map<IEnumerable<ProductDTO>>(products);
     }
-    public async Task<IEnumerable<ProductDTO>> GetProducts(ProductsParameters productsParams)
+    public async Task<PagedList<ProductDTO>> GetProducts(ProductsParameters productsParams)
     {
         var products = await _productRepository.GetProducts(productsParams);
 
-        return _mapper.Map<IEnumerable<ProductDTO>>(products);
+        var items = _mapper.Map<List<ProductDTO>>(products);
+
+        return new PagedList<ProductDTO>(items, products.TotalCount, productsParams.PageNumber, productsParams.PageSize);
     }
     public async Task<ProductDTO> AddProduct(ProductDTO productDto)
     {

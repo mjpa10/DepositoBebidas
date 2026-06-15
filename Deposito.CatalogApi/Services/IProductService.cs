@@ -10,7 +10,7 @@ public interface IProductService
     Task<IEnumerable<ProductDTO?>> GetProductsByCategory(int id);
     Task<ProductDTO> GetProductById(int id);
     Task<IEnumerable<ProductDTO>> GetProductByName(string name);
-    Task<IEnumerable<ProductDTO>> GetProducts(ProductsParameters productsParams);
+    Task<PagedList<ProductDTO>> GetProducts(ProductsParameters productsParams);
 
     Task<ProductDTO> AddProduct(ProductDTO productDto);
     Task UpdateProduct(ProductDTO productDto);
