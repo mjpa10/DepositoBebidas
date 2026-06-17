@@ -16,3 +16,4 @@ public interface IProductRepository
     Task<Product> Update(Product product);
     Task<Product> Delete(int id);
 }
+

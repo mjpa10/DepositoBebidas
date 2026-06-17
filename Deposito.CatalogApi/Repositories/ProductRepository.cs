@@ -7,7 +7,7 @@ namespace Deposito.CatalogApi.Repositories;
 
 public class ProductRepository : IProductRepository
 {
-    private readonly AppDbContext _context;
+    private readonly AppDbContext _context;   
 
     public ProductRepository(AppDbContext context)
     {
@@ -41,7 +41,7 @@ public class ProductRepository : IProductRepository
             .Include(c => c.Category)
             .OrderBy(p => p.ProductId)
             .AsQueryable();
-
+    
         return await PagedList<Product>.ToPagedList(products, productsParams.PageNumber, productsParams.PageSize);
     }
 
