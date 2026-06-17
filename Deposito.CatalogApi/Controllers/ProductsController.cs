@@ -79,6 +79,17 @@ namespace Deposito.CatalogApi.Controllers
         {
             var products = await _productService.FilterProducts(filter);
 
+            var metadata = new
+            {
+                products.TotalCount,
+                products.PageSize,
+                products.CurrentPage,
+                products.TotalPages,
+                products.HasNext,
+                products.HasPrevious
+            };
+            Response.Headers.Add("X-Pagination", System.Text.Json.JsonSerializer.Serialize(metadata));
+
             return Ok(products);
         }
 

@@ -41,8 +41,10 @@ public class ProductRepository : IProductRepository
             .Include(c => c.Category)
             .OrderBy(p => p.ProductId)
             .AsQueryable();
-    
-        return await PagedList<Product>.ToPagedList(products, productsParams.PageNumber, productsParams.PageSize);
+
+        var productsOrdered = await PagedList<Product>.ToPagedList(products, 
+            productsParams.PageNumber, productsParams.PageSize);
+        return productsOrdered;
     }
     public async Task<PagedList<Product>> FilterProducts(ProductsFilter filter)
     {
@@ -78,10 +80,11 @@ public class ProductRepository : IProductRepository
             _ => query.OrderBy(p => p.ProductId)
         };
 
-        return await PagedList<Product>.ToPagedList(
-        query,
+        var productsOrdered =  await PagedList<Product>.ToPagedList(query,
         filter.PageNumber,
         filter.PageSize);
+
+        return productsOrdered;
     }
 
     public async Task<Product> Create(Product product)
