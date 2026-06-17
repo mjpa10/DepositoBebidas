@@ -11,6 +11,7 @@ public interface IProductService
     Task<ProductDTO> GetProductById(int id);
     Task<IEnumerable<ProductDTO>> GetProductByName(string name);
     Task<PagedList<ProductDTO>> GetProducts(ProductsParameters productsParams);
+    Task<PagedList<ProductDTO>> FilterProducts(ProductsFilter filter);
 
     Task<ProductDTO> AddProduct(ProductDTO productDto);
     Task UpdateProduct(ProductDTO productDto);

@@ -55,8 +55,26 @@ public class ProductService : IProductService
 
         var items = _mapper.Map<List<ProductDTO>>(products);
 
-        return new PagedList<ProductDTO>(items, products.TotalCount, productsParams.PageNumber, productsParams.PageSize);
+        return new PagedList<ProductDTO>(
+            items, 
+            products.TotalCount, 
+            productsParams.PageNumber, 
+            productsParams.PageSize);
     }
+
+    public async Task<PagedList<ProductDTO>> FilterProducts(ProductsFilter filter)
+    {
+        var products = await _productRepository.FilterProducts(filter);
+
+        var items = _mapper.Map<List<ProductDTO>>(products);
+
+        return new PagedList<ProductDTO>(
+            items,
+            products.TotalCount,
+            products.CurrentPage,
+            products.PageSize);
+    }
+
     public async Task<ProductDTO> AddProduct(ProductDTO productDto)
     {
         var category = await _categoryRepository.GetById(productDto.CategoryId);

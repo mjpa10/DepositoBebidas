@@ -44,6 +44,45 @@ public class ProductRepository : IProductRepository
     
         return await PagedList<Product>.ToPagedList(products, productsParams.PageNumber, productsParams.PageSize);
     }
+    public async Task<PagedList<Product>> FilterProducts(ProductsFilter filter)
+    {
+        var query = _context.Products
+        .AsNoTracking()
+        .Include(p => p.Category)
+        .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(filter.Name))
+        {
+            query = query.Where(p =>
+                p.Name.Contains(filter.Name));
+        }
+
+        if (filter.CategoryId.HasValue)
+        {
+            query = query.Where(p =>
+                p.CategoryId == filter.CategoryId.Value);
+        }
+
+        if (filter.LowStock == true)
+        {
+            query = query.Where(p =>
+                p.StockQuantity < p.MinimumStock);
+        }
+
+        query = filter.SortBy?.ToLower() switch
+        {
+            "name" => query.OrderBy(p => p.Name),
+            "saleprice" => query.OrderBy(p => p.SalePrice),
+            "costprice" => query.OrderBy(p => p.CostPrice),
+            "stock" => query.OrderBy(p => p.StockQuantity),
+            _ => query.OrderBy(p => p.ProductId)
+        };
+
+        return await PagedList<Product>.ToPagedList(
+        query,
+        filter.PageNumber,
+        filter.PageSize);
+    }
 
     public async Task<Product> Create(Product product)
     {
@@ -68,4 +107,6 @@ public class ProductRepository : IProductRepository
         await _context.SaveChangesAsync();
         return product;
     }
+
+   
 }

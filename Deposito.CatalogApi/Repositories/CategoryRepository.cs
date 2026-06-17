@@ -26,6 +26,13 @@ public class CategoryRepository : ICategoryRepository
     {
         return await _context.Categories.AsNoTracking().Include(c => c.Products).FirstOrDefaultAsync(c => c.CategoryId == id);
     }
+    public async Task<Category?> GetByName(string name)
+    {
+        return await _context.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c =>
+                c.Name.ToLower() == name.ToLower());
+    }
 
     public async Task<Category> Create(Category category)
     {

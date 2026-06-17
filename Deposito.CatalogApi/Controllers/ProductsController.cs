@@ -74,6 +74,14 @@ namespace Deposito.CatalogApi.Controllers
             return Ok(products);
         }
 
+        [HttpGet("filter")]
+        public async Task<ActionResult<PagedList<ProductDTO>>> FilterProducts([FromQuery] ProductsFilter filter)
+        {
+            var products = await _productService.FilterProducts(filter);
+
+            return Ok(products);
+        }
+
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> Post([FromBody] ProductDTO productDto)
         {

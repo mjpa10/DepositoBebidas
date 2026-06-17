@@ -8,15 +8,13 @@ namespace Deposito.CatalogApi.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
 
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper, IProductRepository productRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
-            _productRepository = productRepository;
         }
 
         public async Task<IEnumerable<CategoryDTO>> GetCategories()
@@ -37,17 +35,18 @@ namespace Deposito.CatalogApi.Services
             return _mapper.Map<CategoryDTO>(category);
         }
 
-        public async Task<CategoryDTO> AddCategory(CategoryDTO categoryDto)
+        public async Task<CategoryDTO?> AddCategory(CategoryDTO categoryDto)
         {
-            var categoryExist = await _productRepository.GetByName(categoryDto.Name);
+            var categoryExist = await _categoryRepository.GetByName(categoryDto.Name);
+
             if (categoryExist != null)
             {
                 return null;
             }
 
             var category = _mapper.Map<Category>(categoryDto);
+
             await _categoryRepository.Create(category);
-            categoryDto.CategoryId = category.CategoryId;
 
             return _mapper.Map<CategoryDTO>(category);
         }

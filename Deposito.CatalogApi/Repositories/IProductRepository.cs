@@ -9,6 +9,7 @@ public interface IProductRepository
     Task<IEnumerable<Product>> GetByCategory(int id);
     Task<IEnumerable<Product>> GetByName(string name);
     Task<PagedList<Product>> GetProducts(ProductsParameters productsParameters);
+    Task<PagedList<Product>> FilterProducts(ProductsFilter filter);
 
     Task<Product> GetById(int id);
  
